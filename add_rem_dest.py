@@ -1,9 +1,12 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import os
 
 # Cria ou abre um banco de dados chamado 'meu_banco.db'
-conn = sqlite3.connect('logistica.db')
+
+DB_PATH = os.getenv("DB_PATH", "logistica.db")  # Configuração para deploy
+conn = sqlite3.connect(DB_PATH)
 
 # Cria um cursor para executar comandos SQL
 cursor = conn.cursor()

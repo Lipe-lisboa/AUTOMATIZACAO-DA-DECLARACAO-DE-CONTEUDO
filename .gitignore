@@ -1,0 +1,9 @@
+venv
+TESTE
+
+# Ignorar bancos de dados locais
+*.db
+
+# Ignorar arquivos temporários
+__pycache__/
+*.pyc
