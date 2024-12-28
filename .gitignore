@@ -4,6 +4,8 @@ TESTE
 # Ignorar bancos de dados locais
 *.db
 
+.env
+
 # Ignorar arquivos temporários
 __pycache__/
 *.pyc
