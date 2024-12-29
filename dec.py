@@ -3,7 +3,6 @@ from docx import Document
 from docx2pdf import convert
 from os import listdir, path
 import os
-import pythoncom  # Biblioteca necessária para inicializar COM no Python
 from datetime import datetime
 import sqlite3
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -484,13 +483,14 @@ if st.session_state["nova_dec"] == False:
         # FUNÇÃO QUE CONVERTE O ARQUIVO DOCX EM PDF
         def docx_para_pdf():
             # Inicializa o ambiente COM
-            pythoncom.CoInitialize()
-            
-            caminho_pasta = 'C:/Users/User/Documents/dec_conteudo/DECS'
-            list_arquivos = listdir(caminho_pasta)
-            for arquivo in list_arquivos:
-                if ".docx" in  arquivo:
-                    convert(caminho_pasta + '/' + arquivo)
+            try:
+                caminho_pasta = 'C:/Users/User/Documents/dec_conteudo/DECS'
+                list_arquivos = listdir(caminho_pasta)
+                for arquivo in list_arquivos:
+                    if ".docx" in  arquivo:
+                        convert(caminho_pasta + '/' + arquivo)
+            except:
+                print('erro')
         docx_para_pdf()
 
         # FUNÇÃO QUE FAZ O DOWLOAD DO ARQUIVO 
