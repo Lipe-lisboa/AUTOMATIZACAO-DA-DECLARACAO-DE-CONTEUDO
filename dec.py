@@ -482,15 +482,18 @@ if st.session_state["nova_dec"] == False:
         
         # FUNÇÃO QUE CONVERTE O ARQUIVO DOCX EM PDF
         def docx_para_pdf():
-            # Inicializa o ambiente COM
+            
             try:
+            # Inicializa o ambiente COM
                 caminho_pasta = 'C:/Users/User/Documents/dec_conteudo/DECS'
                 list_arquivos = listdir(caminho_pasta)
                 for arquivo in list_arquivos:
                     if ".docx" in  arquivo:
                         convert(caminho_pasta + '/' + arquivo)
+                        
             except:
-                print('erro')
+                print('ero')
+        
         docx_para_pdf()
 
         # FUNÇÃO QUE FAZ O DOWLOAD DO ARQUIVO 
