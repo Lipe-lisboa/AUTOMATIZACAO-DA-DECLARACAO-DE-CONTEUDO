@@ -232,8 +232,8 @@ if st.session_state["nova_dec"] == False:
                 
                 # ESCREVE AS INFORMAÇÕES ENVIADAS
                 st.write(produto['conteudo'])
-                st.write(f'Quantidade: {produto['quantidade']}')
-                st.write(f'Valor: {produto['valor']}')
+                st.write(f'Quantidade: {produto["quantidade"]}')
+                st.write(f'Valor: {produto["valor"]}')
                 
                 if st.form_submit_button('Adicionar outro Produto'):
                     st.rerun()
