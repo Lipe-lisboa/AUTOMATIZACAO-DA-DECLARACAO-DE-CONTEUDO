@@ -1,7 +1,6 @@
 import streamlit as st
 from docx import Document
-from docx2pdf import convert
-from os import listdir, path
+from os import path
 import os
 from datetime import datetime
 import sqlite3
@@ -9,6 +8,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_ALIGN_VERTICAL
 import pandas as pd
 import pickle
+from subprocess import Popen
 
 # Nome do arquivo para salvar os dados localmente
 SESSION_FILE = "session_data.pkl"
@@ -113,7 +113,8 @@ def excluir_dados():
     caminho_dec_docx = f"DECS/DEC_CONTEÚDO_CORREIOS-{dia}_{mes}_{ano}.docx"
     caminho_dec_pdf = caminho_dec_docx.replace('.docx', '.pdf')
     
-    if os.path.exists(caminho_dec_docx) and os.path.exists(caminho_dec_pdf):
+    
+    if os.path.exists(caminho_dec_docx) and os.path.exists(caminho_dec_pdf) :
         os.remove(caminho_dec_docx)
         os.remove(caminho_dec_pdf)
     
@@ -482,24 +483,18 @@ if st.session_state["nova_dec"] == False:
         
         # FUNÇÃO QUE CONVERTE O ARQUIVO DOCX EM PDF
         def docx_para_pdf():
-            
-            try:
-            # Inicializa o ambiente COM
-                caminho_pasta = 'C:/Users/User/Documents/dec_conteudo/DECS'
-                list_arquivos = listdir(caminho_pasta)
-                for arquivo in list_arquivos:
-                    if ".docx" in  arquivo:
-                        convert(caminho_pasta + '/' + arquivo)
-                        
-            except:
-                print('ero')
-        
+            LIBRE_OFFICE = 'C:\Program Files\LibreOffice\program\soffice.exe'
+
+            arquivo_de_entrada = f'{caminho_dec_docx}'
+            pasta_destino = 'DECS'
+
+            p = Popen([LIBRE_OFFICE, '--headless', '--convert-to', 'pdf', '--outdir', pasta_destino, arquivo_de_entrada])
+            p.communicate()
         docx_para_pdf()
 
         # FUNÇÃO QUE FAZ O DOWLOAD DO ARQUIVO 
         def dowload():
-            caminho_pdf = caminho_dec_docx.replace(".docx", ".pdf")
-            
+            caminho_pdf = caminho_dec_docx.replace('.docx', '.pdf')
             with open(caminho_pdf, "rb") as pdf_file:
                 pdf_bytes =pdf_file.read()
                 btt_dowload = st.download_button(
