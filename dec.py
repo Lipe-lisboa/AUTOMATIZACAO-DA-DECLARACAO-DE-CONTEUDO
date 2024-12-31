@@ -483,7 +483,7 @@ if st.session_state["nova_dec"] == False:
         
         # FUNÇÃO QUE CONVERTE O ARQUIVO DOCX EM PDF
         def docx_para_pdf():
-            LIBRE_OFFICE = r'.\LibreOffice\program\soffice.exe'
+            LIBRE_OFFICE = r'C:\Users\User\Documents\dec_conteudo\LibreOffice\program\soffice.exe'
 
             arquivo_de_entrada = f'{caminho_dec_docx}'
             pasta_destino = 'DECS'
