@@ -1,6 +1,7 @@
 import streamlit as st
 from docx import Document
 from os import path
+from pathlib import Path
 import os
 from datetime import datetime
 import sqlite3
@@ -9,6 +10,8 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 import pandas as pd
 import pickle
 from subprocess import Popen
+import win32com.client
+import pythoncom
 
 # Nome do arquivo para salvar os dados localmente
 SESSION_FILE = "session_data.pkl"
@@ -275,6 +278,7 @@ if st.session_state["nova_dec"] == False:
         ano = data_atual.year
 
         #DEC_CONTEÚDO_CORREIOS-04_12_2024.docx
+        nome_dec = f"DEC_CONTEÚDO_CORREIOS-{dia}_{mes}_{ano}.docx"
         caminho_dec_docx = f"DECS/DEC_CONTEÚDO_CORREIOS-{dia}_{mes}_{ano}.docx"
         
         # Função para editar o documento base
@@ -483,15 +487,22 @@ if st.session_state["nova_dec"] == False:
         
         # FUNÇÃO QUE CONVERTE O ARQUIVO DOCX EM PDF
         def docx_para_pdf():
+            # Inicializar o COM
+            pythoncom.CoInitialize()
+            wdFormatPDF = 17
+
+                
+            nome_dec = f"DEC_CONTEÚDO_CORREIOS-{dia}_{mes}_{ano}.docx"
+            entrada = f"C:\\Users\\User\\Documents\\dec_conteudo\\DECS\\{nome_dec}"
+            print(entrada)
+            nome_saida = nome_dec.replace('docx', 'pdf')
+            saida = f"C:\\Users\\User\\Documents\\dec_conteudo\\DECS\\{nome_saida}"
             
-           # LIBRE_OFFICE = os.getenv("LIBRE_OFFICE", ".\\LibreOffice\\program\\soffice.exe")
-            LIBRE_OFFICE = os.path.join("LibreOffice", "program", "soffice.exe")
-
-            arquivo_de_entrada = f'{caminho_dec_docx}'
-            pasta_destino = 'DECS'
-
-            p = Popen([LIBRE_OFFICE, '--headless', '--convert-to', 'pdf', '--outdir', pasta_destino, arquivo_de_entrada])
-            p.communicate()
+            word = win32com.client.Dispatch('Word.Application')
+            doc = word.Documents.Open(entrada)
+            doc.SaveAs(saida, FileFormat=wdFormatPDF)
+            doc.Close()
+            word.Quit()
         docx_para_pdf()
 
         # FUNÇÃO QUE FAZ O DOWLOAD DO ARQUIVO 
